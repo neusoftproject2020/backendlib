@@ -2,8 +2,8 @@ package com.neusoft.oa.hr.model;
 
 import java.io.Serializable;
 import java.util.List;
-
 import org.apache.ibatis.type.Alias;
+//部门Model类
 @Alias("Department")
 public class DepartmentModel implements Serializable {
 	private int no=0;

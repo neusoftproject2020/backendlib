@@ -8,7 +8,7 @@ import org.apache.ibatis.type.Alias;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+//员工的Mode类
 @Alias("Employee")
 public class EmployeeModel implements Serializable{
 	
