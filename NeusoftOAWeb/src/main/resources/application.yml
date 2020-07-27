@@ -1,0 +1,20 @@
+
+server:  port: 8200
+ 
+spring:
+  datasource:
+    username: root
+    password: root1234
+    url: jdbc:mysql://localhost:3319/neuoa?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+ 
+mybatis:
+  mapper-locations: classpath:mapping/**/*.xml
+  type-aliases-package: com.neusoft.oa.hr.model,com.neusoft.oa.admin.model
+ 
+#showSql
+logging:
+  level:
+     com.neusoft.oa: debug
+    
+ 

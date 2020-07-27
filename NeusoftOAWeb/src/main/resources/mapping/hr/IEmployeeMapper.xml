@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.oa.hr.mapper.IEmployeeMapper">
+	<!-- 员工查询基础映射，不包含关联属性 -->
+	<resultMap  id="EmployeeResultMap" type="Employee">
+		<id property="id" column="EMPID" />
+		<result property="password" column="EMPPASSWORD"/>
+		<result property="name" column="EMPNAME"/>
+		<result property="sex" column="EMPSEX"/>
+		<result property="age" column="AGE"/>
+		<result property="salary" column="SALARY"/>
+		<result property="birthday" column="BIRTHDAY"/>
+		<result property="joinDate" column="JOINDATE"/>
+		<result property="photoFileName" column="PhotoFileName"/>
+		<result property="photoContentType" column="PhotoContentType"/>		
+	</resultMap>
+	<!-- 关联员工部门的结果映射 -->
+	<resultMap  id="EmployeeWithDepartmentResultMap" type="Employee" extends="EmployeeResultMap">
+		<!-- 使用内嵌式select方式取得关联的部门对象信息 -->
+		<!-- 
+		<association property="department" javaType="Department" column="DEPTNO" select="com.neusoft.oa.hr.dao.IDepartmentDao.selectByNo"   ></association>
+		 -->
+		<association property="department" resultMap="com.neusoft.oa.hr.mapper.IDepartmentMapper.DepartmentResultMap" />
+	</resultMap>
+	
+	<!-- 关联员工爱好的结果映射 -->
+	<resultMap  id="EmployeeWithBehaveResultMap" type="Employee" extends="EmployeeResultMap">
+		<!-- 使用内嵌式select方式取得关联的部门对象信息
+		<collection property="behaves" column="EMPID" select="selectBehaveListByEmployee"></collection> 
+		 -->
+		<collection property="behaves" resultMap="com.neusoft.oa.hr.mapper.IBehaveMapper.BehaveResultMap"></collection>
+	</resultMap>
+	
+	<!-- 关联员工部门和爱好的结果映射 -->
+	<resultMap id="EmployeeWithDepartmentAndBehaveResultMap" type="Employee" extends="EmployeeWithDepartmentResultMap">
+		<collection property="behaves" resultMap="com.neusoft.oa.hr.mapper.IBehaveMapper.BehaveResultMap"></collection>
+	</resultMap>
+	
+	
+	<insert id="insert" parameterType="Employee" >
+	insert into oa_employee (EMPID,DEPTNO,EMPPASSWORD,EMPNAME,EMPSEX,AGE,SALARY,Birthday,JoinDate) 
+	values (#{id},#{department.no},#{password},#{name},#{sex},#{age},#{salary},#{birthday},#{joinDate})
+ 	</insert>
+ 	
+ 	<insert id="insertWithPhoto" parameterType="Employee" >
+	insert into oa_employee (EMPID,DEPTNO,EMPPASSWORD,EMPNAME,EMPSEX,AGE,SALARY,BIRTHDAY,JOINDATE,PHOTO,PHOTOCONTENTTYPE,PHOTOFILENAME) 
+	values (#{id},#{department.no},#{password},#{name},#{sex},#{age},#{salary},#{birthday},#{joinDate},#{photo},#{photoContentType},#{photoFileName})
+ 	</insert>
+ 	
+  
+ 	<!-- 修改员工 无图片 -->
+	<update id="update" parameterType="Employee">
+	update oa_employee set DEPTNO=#{department.no},EMPPASSWORD=#{password},EMPNAME=#{name},
+	EMPSEX=#{sex},AGE=#{age},SALARY=#{salary},BIRTHDAY=#{birthday},JOINDATE=#{joinDate}
+	where EMPID=#{id}
+	</update>
+	
+	<!-- 修改员工有图片 -->
+	<update id="updateWithPhoto" parameterType="Employee">
+	update oa_employee setDEPTNO=#{department.no}, EMPPASSWORD=#{password},EMPNAME=#{name},
+	EMPSEX=#{sex},AGE=#{age},SALARY=#{salary},BIRTHDAY=#{birthday},JOINDATE=#{joinDate}
+	,PHOTO=#{photo},PhotoFileName=#{photoFileName},PhotoContentType=#{photoContentType}
+	where EMPID=#{id}
+	</update>
+  
+	<delete id="delete">
+ 	delete from oa_employee  where EMPID=#{id} 
+ 	</delete>
+  	<!-- 取得所有员工列表，不取关联的部门和爱好 -->
+ 	<select id="selectListByAll"  resultMap="EmployeeResultMap">
+ 	select *  from oa_employee
+ 	</select>
+ 	
+ 	<!-- 取得所有员工列表，取关联的部门，不取关联爱好属性, 分页模式 -->
+ 	<select id="selectListByAllWithPageWithDepartment" resultMap="EmployeeWithDepartmentResultMap">
+ 	select *  from oa_employee a inner join oa_department b on a.DEPTNO=b.DEPTNO
+ 	limit #{start},#{rows}
+ 	</select>
+ 	
+ 	<!-- 取得所有员工列表，取关联的部门，取关联爱好属性 -->
+ 	<select id="selectListByAllWithDepartmentAndBehaves" resultMap="EmployeeWithDepartmentAndBehaveResultMap">
+ 	select a.*,b.*,c.*  from oa_employee a inner join oa_department b on a.DEPTNO=b.DEPTNO 
+ 	left outer join oa_employeebehave c on a.EMPID=c.EMPID 
+ 	left outer join oa_behave d on c.BNO=d.BNO
+ 	
+ 	</select>
+ 
+ 
+ 	<select id="selectById" resultMap="EmployeeResultMap">
+ 	select * from oa_employee where EMPID=#{id}
+ 	</select>
+ 	
+ 	<select id="selectByIdWithDepartment" resultMap="EmployeeWithDepartmentResultMap">
+ 	select a.*,b.* from oa_employee a inner join oa_department b on a.DEPTNO=b.DEPTNO  where EMPID=#{id}
+ 	</select>
+ 	
+ 	<select id="selectByIdWithBehaves" resultMap="EmployeeWithBehaveResultMap">
+ 	select a.*,c.* from oa_employee a left outer join oa_employeebehave b on a.EMPID=b.EMPID 
+ 	left outer join oa_behave c on b.BNO=c.BNO where a.EMPID=#{id}
+ 	</select>
+ 	
+ 	<!-- ======================================动态SQL================================================================ -->
+ 	<select id="selectListByConditionWithPageWithDepartment" resultMap="EmployeeWithDepartmentResultMap">
+ 	select a.*,b.* from oa_employee a inner join oa_department b on a.DEPTNO=b.DEPTNO 
+ 	<where> 
+ 	<if test="lowAge!=0">
+ 	  and a.AGE &gt;=#{lowAge}
+ 	</if>
+ 	<if test="highAge!=0">
+ 	 and a.AGE &lt;=#{highAge}
+ 	</if>
+ 	<if test="startJoinDate!=null">
+ 	 and a.JOINDATE &gt;= #{startJoinDate}
+ 	</if>
+ 	<if test="endJoinDate!=null">
+ 	 and a.JOINDATE &lt;= #{endJoinDate}
+ 	</if>
+ 	<if test="sex!=null and sex!=''">
+ 	 and a.EMPSEX=#{sex}
+ 	</if>
+ 	<if test="nameKey!=null and nameKey!=''">
+ 	 and a.EMPNAME like #{nameKey}
+ 	</if>
+ 	</where>
+ 	limit #{start},#{rows}
+ 	</select>
+ 	
+ 	<select id="selectCountByCondition" resultType="_int">
+ 	select IFNULL(count(a.EMPID),0) from oa_employee a inner join oa_department b on a.DEPTNO=b.DEPTNO 
+ 	<where> 
+ 	<if test="lowAge!=0">
+ 	  and a.AGE &gt;=#{lowAge}
+ 	</if>
+ 	<if test="highAge!=0">
+ 	 and a.AGE &lt;=#{highAge}
+ 	</if>
+ 	<if test="startJoinDate!=null">
+ 	 and a.JOINDATE &gt;= #{startJoinDate}
+ 	</if>
+ 	<if test="endJoinDate!=null">
+ 	 and a.JOINDATE &lt;= #{endJoinDate}
+ 	</if>
+ 	<if test="sex!=null and sex!=''">
+ 	 and a.EMPSEX=#{sex}
+ 	</if>
+ 	<if test="nameKey!=null and nameKey!=''">
+ 	 and a.EMPNAME like #{nameKey}
+ 	</if>
+ 	</where>
+ 	</select>
+ 	
+ 	
+ 	<!-- ===================================爱好相关方法============================================================= -->
+ 	<!-- 取得指定员工的爱好列表 -->
+ 	<select id="selectBehaveListByEmployee" resultMap="com.neusoft.oa.hr.mapper.IBehaveMapper.BehaveResultMap">
+ 	select * from oa_behave where BNO in (select BNO from oa_employeebehave where EMPID=#{id})
+ 	</select>
+ 	
+ 	<insert id="insertBehave">
+ 	insert into oa_employeebehave values  (#{id},#{behaveNo})
+ 	</insert>
+ 	
+ 	<insert id="insertBehaves">
+ 	  insert into oa_employeebehave values 
+ 	  <foreach collection="behaveNos" item="bno"  separator="," >
+ 	    (#{id},#{bno})
+ 	  </foreach>
+ 	</insert>
+ 	
+ 	<select id="selectListByBehaves" resultMap="EmployeeResultMap">
+ 	 select * from oa_employee  where EMPID in (select EMPID from oa_employeebehave where BNO 
+ 	  in  <foreach item="item" index="index" collection="behaves" open="(" separator="," close=")">
+        #{item}
+  		</foreach>
+ 	 )
+ 	 
+ 	</select>
+ 	
+  
+</mapper>

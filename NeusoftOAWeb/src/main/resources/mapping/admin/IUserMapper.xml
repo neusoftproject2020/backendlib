@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.oa.admin.mapper.IUserMapper">
+	<resultMap id="UserResultMap" type="User" >
+		<id property="id" column="USERID"/>
+		<result property="password" column="UPASSWORD"/>
+		<result property="name" column="USERNAME"/>
+	</resultMap>
+ 	<update id="update">
+ 	update oa_adminuser set UPASSWORD=#{password},USERNAME=#{name} where USERID=#{id}
+ 	</update>
+ 	<select id="getById"  resultMap="UserResultMap">
+ 	select * from oa_adminuser where USERID=#{id}
+ 	</select>
+</mapper>

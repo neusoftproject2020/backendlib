@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.oa.hr.mapper.IBehaveMapper">
+
+	<resultMap id="BehaveResultMap" type="Behave" >
+		<id property="no" column="BNO"/>
+		<result property="name" column="BNAME"/>
+	</resultMap>
+ 
+	<insert id="insert" parameterType="Behave" keyProperty="no"   keyColumn="BNO"  useGeneratedKeys="true">
+	insert into oa_Behave (BNAME) values (#{name})
+ 	</insert>
+  
+ 	<update id="update">
+ 	update  oa_Behave set BNAME=#{name} where BNO=#{no}
+ 	</update>
+  
+	<delete id="delete">
+ 	delete from oa_Behave  where BNO=#{no} 
+ 	</delete>
+  
+ 	<select id="selectByAll"  resultMap="BehaveResultMap">
+ 	select *  from oa_Behave
+ 	</select>
+ 	
+ 	<select id="selectByAllWithPage" resultMap="BehaveResultMap">
+ 	select *  from oa_Behave limit #{start},#{rows}
+ 	</select>
+ 	
+ 	<select id="selectCountByAll" resultType="_int">
+ 	select count(*)  from oa_Behave
+ 	</select>
+ 
+ 	<select id="selectByNo"  resultMap="BehaveResultMap">
+ 	select * from oa_Behave where BNO=#{no}
+ 	</select>
+  
+</mapper>
