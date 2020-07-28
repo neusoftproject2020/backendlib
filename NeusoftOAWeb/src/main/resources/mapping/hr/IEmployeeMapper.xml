@@ -57,9 +57,14 @@
 	where EMPID=#{id}
 	</update>
 	
+	<update id="updatePhoto">
+	update oa_employee set PHOTO=#{photo},PhotoFileName=#{photoFileName},PhotoContentType=#{photoContentType}
+	where EMPID=#{id}
+	</update>
+	
 	<!-- 修改员工有图片 -->
 	<update id="updateWithPhoto" parameterType="Employee">
-	update oa_employee setDEPTNO=#{department.no}, EMPPASSWORD=#{password},EMPNAME=#{name},
+	update oa_employee set DEPTNO=#{department.no}, EMPPASSWORD=#{password},EMPNAME=#{name},
 	EMPSEX=#{sex},AGE=#{age},SALARY=#{salary},BIRTHDAY=#{birthday},JOINDATE=#{joinDate}
 	,PHOTO=#{photo},PhotoFileName=#{photoFileName},PhotoContentType=#{photoContentType}
 	where EMPID=#{id}

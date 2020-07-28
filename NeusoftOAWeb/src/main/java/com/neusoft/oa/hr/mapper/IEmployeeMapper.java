@@ -20,6 +20,9 @@ public interface IEmployeeMapper {
 	public void update(EmployeeModel em) throws Exception;
 	//修改员工，有图片
 	public void updateWithPhoto(EmployeeModel em) throws Exception;
+	//只修改员工的照片
+	public void updatePhoto(EmployeeModel em) throws Exception;
+	
 	//删除员工
 	public void delete(EmployeeModel em) throws Exception;
 	//取得指定的员工对象,不取关联的部门和爱好

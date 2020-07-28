@@ -13,6 +13,9 @@ public interface IEmployeeService {
 	public void add(EmployeeModel em) throws Exception;
 	//修改员工
 	public void modify(EmployeeModel em) throws Exception;
+	//只修改员工的照片
+	public void modifyPhoto(EmployeeModel em) throws Exception;
+		
 	//删除员工
 	public void delete(EmployeeModel em) throws Exception;
 	//取得指定的员工对象,不取关联的部门和爱好

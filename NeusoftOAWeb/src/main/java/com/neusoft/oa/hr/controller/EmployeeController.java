@@ -38,6 +38,20 @@ public class EmployeeController {
 		result.setMessage("增加员工成功!");
 		return result;
 	}
+	
+	@PostMapping(value="/update/photo")
+	public Result<String> updatePhoto(EmployeeModel em,@RequestParam(required=false) MultipartFile employeePhoto,@RequestParam(required=false) int[] selectBehaves) throws Exception{
+		if(employeePhoto!=null&&(!employeePhoto.isEmpty())) {
+			em.setPhoto(employeePhoto.getBytes());
+			em.setPhotoFileName(employeePhoto.getOriginalFilename());
+			em.setPhotoContentType(employeePhoto.getContentType());
+		}
+		employeeService.modifyPhoto(em);
+		Result<String> result=new Result<String>();
+		result.setStatus("OK");
+		result.setMessage("修改员工照片成功!");
+		return result;
+	}
 	@PostMapping(value="/modify")
 	public Result<String> modify(EmployeeModel em,@RequestParam(required=false) MultipartFile employeePhoto,@RequestParam(required=false) int[] selectBehaves) throws Exception{
 		

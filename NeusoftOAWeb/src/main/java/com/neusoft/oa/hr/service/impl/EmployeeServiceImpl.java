@@ -40,6 +40,10 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		}
 
 	}
+	//只修改员工的照片
+	public void modifyPhoto(EmployeeModel em) throws Exception{
+		employeeMapper.updatePhoto(em);
+	}
 
 	@Override
 	public void delete(EmployeeModel em) throws Exception {
