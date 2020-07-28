@@ -1,8 +1,10 @@
 package com.neusoft.oa.hr.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,12 +16,13 @@ import com.neusoft.oa.restresult.Result;
 //爱好REST Controller类
 @RestController
 @RequestMapping(value="/behave")
+@CrossOrigin(origins = {"*", "null"})
 public class BehaveController {
 	@Autowired
 	private IBehaveService behaveService=null;
 	
 	@PostMapping(value="/add")
-	public Result<String> add(BehaveModel dm) throws Exception{
+	public Result<String> add(@RequestBody BehaveModel dm) throws Exception{
 		behaveService.add(dm);
 		Result<String> result=new Result<String>();
 		result.setStatus("OK");
@@ -28,7 +31,7 @@ public class BehaveController {
 		
 	}
 	@PostMapping(value="/modify")
-	public Result<String> modify(BehaveModel dm) throws Exception{
+	public Result<String> modify(@RequestBody BehaveModel dm) throws Exception{
 		behaveService.modify(dm);
 		Result<String> result=new Result<String>();
 		result.setStatus("OK");
@@ -36,7 +39,7 @@ public class BehaveController {
 		return result;
 	}
 	@PostMapping(value="/delete")
-	public Result<String> delete(BehaveModel dm) throws Exception{
+	public Result<String> delete(@RequestBody BehaveModel dm) throws Exception{
 		behaveService.delete(dm);
 		Result<String> result=new Result<String>();
 		result.setStatus("OK");
