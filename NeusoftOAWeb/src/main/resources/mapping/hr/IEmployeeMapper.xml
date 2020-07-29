@@ -16,6 +16,11 @@
 		<result property="photoFileName" column="PhotoFileName"/>
 		<result property="photoContentType" column="PhotoContentType"/>		
 	</resultMap>
+	<resultMap  id="EmployeeWithPhotoResultMap" type="Employee" extends="EmployeeResultMap">
+		<result property="photo" column="PHOTO"/>		
+	</resultMap>
+	
+	
 	<!-- 关联员工部门的结果映射 -->
 	<resultMap  id="EmployeeWithDepartmentResultMap" type="Employee" extends="EmployeeResultMap">
 		<!-- 使用内嵌式select方式取得关联的部门对象信息 -->
@@ -94,6 +99,10 @@
  
  
  	<select id="selectById" resultMap="EmployeeResultMap">
+ 	select * from oa_employee where EMPID=#{id}
+ 	</select>
+ 	
+ 	<select id="selectByIdWithPhoto" resultMap="EmployeeWithPhotoResultMap">
  	select * from oa_employee where EMPID=#{id}
  	</select>
  	

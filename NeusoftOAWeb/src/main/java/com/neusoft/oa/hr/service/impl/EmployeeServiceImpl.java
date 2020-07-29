@@ -56,6 +56,11 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		
 		return employeeMapper.selectById(id);
 	}
+	//取得指定的员工对象,取其照片
+	@Override
+	public EmployeeModel getByIdWithPhoto(String id) throws Exception{
+		return employeeMapper.selectByIdWithPhoto(id);
+	}
 
 	@Override
 	public EmployeeModel getByIdWithDepartment(String id) throws Exception {

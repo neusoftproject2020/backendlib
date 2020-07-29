@@ -27,6 +27,9 @@ public interface IEmployeeMapper {
 	public void delete(EmployeeModel em) throws Exception;
 	//取得指定的员工对象,不取关联的部门和爱好
 	public EmployeeModel selectById(String id) throws Exception;
+	//取得指定的员工对象,取得员工照片
+	public EmployeeModel selectByIdWithPhoto(String id) throws Exception;
+		
 	//取得所有员工列表，不取关联的部门和爱好属性
 	public List<EmployeeModel> selectListByAll() throws Exception;
 	//==========================================================================================

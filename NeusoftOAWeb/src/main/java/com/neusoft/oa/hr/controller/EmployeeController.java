@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -127,6 +130,20 @@ public class EmployeeController {
 		result.setMessage("按取得指定员工成功!");
 		return result;
 		
+	}
+	//
+	//显示或下载员工的照片字段photo
+	@RequestMapping("/photo")
+	public ResponseEntity<byte[]> showPhoto(@RequestParam String id) throws Exception{
+		EmployeeModel em=employeeService.getByIdWithPhoto(id);
+		if(em!=null&&em.getPhotoContentType()!=null) {
+			HttpHeaders responseHeaders = new HttpHeaders();
+			responseHeaders.set("Content-Type", em.getPhotoContentType());
+			return new ResponseEntity<byte[]>(em.getPhoto(), responseHeaders,HttpStatus.OK);
+		}
+		else {
+			return null;
+		}	
 	}
 	
 

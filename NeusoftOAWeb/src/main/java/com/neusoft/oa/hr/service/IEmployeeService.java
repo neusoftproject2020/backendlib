@@ -20,6 +20,9 @@ public interface IEmployeeService {
 	public void delete(EmployeeModel em) throws Exception;
 	//取得指定的员工对象,不取关联的部门和爱好
 	public EmployeeModel getById(String id) throws Exception;
+	//取得指定的员工对象,取其照片
+	public EmployeeModel getByIdWithPhoto(String id) throws Exception;
+		
 	//取得指定的员工对象,取关联的部门，不取爱好
 	public EmployeeModel getByIdWithDepartment(String id) throws Exception;
 	//取得指定的员工对象,不取关联的部门，取爱好
