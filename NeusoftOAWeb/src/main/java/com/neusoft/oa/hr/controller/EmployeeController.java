@@ -1,6 +1,10 @@
 package com.neusoft.oa.hr.controller;
 
+import java.io.File;
 import java.util.Date;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +28,25 @@ public class EmployeeController {
 	private IEmployeeService employeeService=null;
 	
 	@PostMapping(value="/add")
-	public Result<String> add(EmployeeModel em,@RequestParam(required=false) MultipartFile employeePhoto,@RequestParam(required=false) int[] selectBehaves) throws Exception{
+	public Result<String> add(EmployeeModel em,@RequestParam(required=false) MultipartFile employeePhoto,@RequestParam(required=false) int[] selectBehaves,HttpServletRequest request) throws Exception{
 		
 		if(employeePhoto!=null&&(!employeePhoto.isEmpty())) {
+			/*
+			ServletContext application=request.getServletContext();
+			String path=application.getRealPath("/productphoto");
+			System.out.println(path);
+			
+			File dist=new File(path+"/"+employeePhoto.getOriginalFilename());
+			//保存上传文件到目标目录
+			employeePhoto.transferTo(dist);
+			*/
+			
 			em.setPhoto(employeePhoto.getBytes());
 			em.setPhotoFileName(employeePhoto.getOriginalFilename());
+			//em.setPhotoFileName("P_"+em.getId()+"."+    );
 			em.setPhotoContentType(employeePhoto.getContentType());
+			//保存到Web站点的公开目录 productphoto下。
+			
 		}
 		employeeService.add(em);
 		if(selectBehaves!=null&&selectBehaves.length>0) {
