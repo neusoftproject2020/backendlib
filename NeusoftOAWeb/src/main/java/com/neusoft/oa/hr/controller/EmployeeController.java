@@ -28,24 +28,19 @@ public class EmployeeController {
 	private IEmployeeService employeeService=null;
 	
 	@PostMapping(value="/add")
-	public Result<String> add(EmployeeModel em,@RequestParam(required=false) MultipartFile employeePhoto,@RequestParam(required=false) int[] selectBehaves,HttpServletRequest request) throws Exception{
+	public Result<String> add(EmployeeModel em,@RequestParam(required=false) MultipartFile employeePhoto,@RequestParam(required=false) int[] selectBehaves) throws Exception{
 		
 		if(employeePhoto!=null&&(!employeePhoto.isEmpty())) {
-			/*
-			ServletContext application=request.getServletContext();
-			String path=application.getRealPath("/productphoto");
-			System.out.println(path);
-			
-			File dist=new File(path+"/"+employeePhoto.getOriginalFilename());
+			//目标文件地址
+			File dist=new File("d:/webroot/photo/"+employeePhoto.getOriginalFilename());
+			//取得文件的字节
+			em.setPhoto(employeePhoto.getBytes());
 			//保存上传文件到目标目录
 			employeePhoto.transferTo(dist);
-			*/
 			
-			em.setPhoto(employeePhoto.getBytes());
 			em.setPhotoFileName(employeePhoto.getOriginalFilename());
 			//em.setPhotoFileName("P_"+em.getId()+"."+    );
-			em.setPhotoContentType(employeePhoto.getContentType());
-			//保存到Web站点的公开目录 productphoto下。
+			em.setPhotoContentType(employeePhoto.getContentType());			
 			
 		}
 		employeeService.add(em);
