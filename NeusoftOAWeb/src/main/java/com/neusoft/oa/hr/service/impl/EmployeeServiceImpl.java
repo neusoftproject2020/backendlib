@@ -75,32 +75,32 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	}
 
 	@Override
-	public List<EmployeeModel> getListByConditionWithPageWithDepartment(int rows, int page, int lowAge, int highAge,
+	public List<EmployeeModel> getListByConditionWithPageWithDepartment(int rows, int page,int departmentNo, int lowAge, int highAge,
 			Date startJoinDate, Date endJoinDate, String sex, String nameKey) throws Exception {
 		
 		if(nameKey!=null&&nameKey.trim().length()>0) {
 			nameKey="%"+nameKey+"%";
 		}
 		
-		return employeeMapper.selectListByConditionWithPageWithDepartment(rows*(page-1), rows, lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey);
+		return employeeMapper.selectListByConditionWithPageWithDepartment(rows*(page-1), rows,departmentNo, lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey);
 	}
 
 	@Override
-	public int getCountByCondition(int lowAge, int highAge, Date startJoinDate, Date endJoinDate, String sex,
+	public int getCountByCondition(int departmentNo,int lowAge, int highAge, Date startJoinDate, Date endJoinDate, String sex,
 			String nameKey) throws Exception {
 		if(nameKey!=null&&nameKey.trim().length()>0) {
 			nameKey="%"+nameKey+"%";
 		}
-		return employeeMapper.selectCountByCondition(lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey);
+		return employeeMapper.selectCountByCondition(departmentNo,lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey);
 	}
 
 	@Override
-	public int getPageCountByCondition(int rows, int lowAge, int highAge, Date startJoinDate, Date endJoinDate,
+	public int getPageCountByCondition(int rows,int departmentNo, int lowAge, int highAge, Date startJoinDate, Date endJoinDate,
 			String sex, String nameKey) throws Exception {
 		if(nameKey!=null&&nameKey.trim().length()>0) {
 			nameKey="%"+nameKey+"%";
 		}
-		int count=this.getCountByCondition(lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey);
+		int count=this.getCountByCondition(departmentNo,lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey);
 		int pageCount=0;
 		if(count%rows==0) {
 			pageCount=count/rows;

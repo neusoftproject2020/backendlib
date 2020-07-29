@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -97,22 +98,23 @@ public class EmployeeController {
 		return result;
 	}
 	
-	@PostMapping(value="/list/condition/page")
+	@GetMapping(value="/list/condition/page")
 	public Result<EmployeeModel> getListByConditionWithPage(
 			@RequestParam(required=false,defaultValue="10") int rows, 
 			@RequestParam(required=false,defaultValue="1") int page, 
+			@RequestParam(required=false,defaultValue="0") int departmentNo,
 			@RequestParam(required=false,defaultValue="0") int lowAge, 
 			@RequestParam(required=false,defaultValue="0") int highAge,
-			@RequestParam(required=false) Date startJoinDate, 
-			@RequestParam(required=false) Date endJoinDate, 
+			@RequestParam(required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date startJoinDate, 
+			@RequestParam(required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date endJoinDate, 
 			@RequestParam(required=false,defaultValue="") String sex, 
 			@RequestParam(required=false,defaultValue="") String nameKey) throws Exception{
 		Result<EmployeeModel> result=new Result<EmployeeModel>();
 		result.setPage(page);
 		result.setRows(rows);
-		result.setCount(employeeService.getCountByCondition(lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey));
-		result.setPageCount(employeeService.getPageCountByCondition(rows, lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey));
-		result.setList(employeeService.getListByConditionWithPageWithDepartment(rows, page, lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey));
+		result.setCount(employeeService.getCountByCondition(departmentNo,lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey));
+		result.setPageCount(employeeService.getPageCountByCondition(rows,departmentNo, lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey));
+		result.setList(employeeService.getListByConditionWithPageWithDepartment(rows, page,departmentNo,lowAge, highAge, startJoinDate, endJoinDate, sex, nameKey));
 		result.setStatus("OK");
 		result.setMessage("按条件检索员工列表成功!");
 		return result;
@@ -120,9 +122,9 @@ public class EmployeeController {
 	@GetMapping("/get/{id}")
 	public Result<EmployeeModel> get(@PathVariable(value="id") String id) throws Exception{
 		Result<EmployeeModel> result=new Result<EmployeeModel>();
-		result.setResult(employeeService.getById(id));
+		result.setResult(employeeService.getByIdWithDepartmentAndBehaves(id));
 		result.setStatus("OK");
-		result.setMessage("按条件检索员工列表成功!");
+		result.setMessage("按取得指定员工成功!");
 		return result;
 		
 	}

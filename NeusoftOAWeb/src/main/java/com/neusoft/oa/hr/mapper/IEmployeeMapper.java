@@ -49,13 +49,13 @@ public interface IEmployeeMapper {
 	//=================================================================================================
 	//按综合条件检索员工列表，分页模式，之取关联的部门属性对象
 	public List<EmployeeModel> selectListByConditionWithPageWithDepartment(
-			@Param("start") int start,@Param("rows") int rows
+			@Param("start") int start,@Param("rows") int rows,@Param("departmentNo") int departmentNo
 			,@Param("lowAge") int lowAge,@Param("highAge") int highAge
 			,@Param("startJoinDate") Date startJoinDate,@Param("endJoinDate") Date endJoinDate
 			,@Param("sex") String sex,@Param("nameKey") String nameKey) throws Exception;
 	
 	//按综合条件检索员工个数，分页模式，之取关联的部门属性对象
-	public int selectCountByCondition(
+	public int selectCountByCondition(@Param("departmentNo") int departmentNo,
 			@Param("lowAge") int lowAge,@Param("highAge") int highAge
 			,@Param("startJoinDate") Date startJoinDate,@Param("endJoinDate") Date endJoinDate
 			,@Param("sex") String sex,@Param("nameKey") String nameKey) throws Exception;

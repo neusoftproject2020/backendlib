@@ -106,10 +106,20 @@
  	left outer join oa_behave c on b.BNO=c.BNO where a.EMPID=#{id}
  	</select>
  	
+ 	<select id="selectByIdWithDepartmentAndBehaves" resultMap="EmployeeWithDepartmentAndBehaveResultMap">
+ 	select a.*,b.*,d.* from oa_employee a inner join oa_department b on a.DEPTNO=b.DEPTNO  
+ 	 left outer join oa_employeebehave c on a.EMPID=c.EMPID  
+ 	left outer join oa_behave d on c.BNO=d.BNO 
+ 	where a.EMPID=#{id}
+ 	</select>
+ 	
  	<!-- ======================================动态SQL================================================================ -->
  	<select id="selectListByConditionWithPageWithDepartment" resultMap="EmployeeWithDepartmentResultMap">
  	select a.*,b.* from oa_employee a inner join oa_department b on a.DEPTNO=b.DEPTNO 
  	<where> 
+ 	<if test="departmentNo!=0">
+ 	 and a.DEPTNO=#{departmentNo}
+ 	</if>
  	<if test="lowAge!=0">
  	  and a.AGE &gt;=#{lowAge}
  	</if>
@@ -135,6 +145,9 @@
  	<select id="selectCountByCondition" resultType="_int">
  	select IFNULL(count(a.EMPID),0) from oa_employee a inner join oa_department b on a.DEPTNO=b.DEPTNO 
  	<where> 
+ 	<if test="departmentNo!=0">
+ 	 and a.DEPTNO=#{departmentNo}
+ 	</if>
  	<if test="lowAge!=0">
  	  and a.AGE &gt;=#{lowAge}
  	</if>

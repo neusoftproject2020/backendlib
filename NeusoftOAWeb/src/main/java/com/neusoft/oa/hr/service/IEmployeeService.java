@@ -30,16 +30,16 @@ public interface IEmployeeService {
 	//此方法未来在前端员工页面使用，使用分页方式显示员工列表，并能进行条件检索
 	//按检索条件取得员工列表，并取得关联的部门对象
 	public List<EmployeeModel> getListByConditionWithPageWithDepartment(
-			int rows,int page,int lowAge,int highAge,Date startJoinDate,Date endJoinDate
+			int rows,int page,int departmentNo,int lowAge,int highAge,Date startJoinDate,Date endJoinDate
 			,String sex, String nameKey) throws Exception;
 	
 	//按综合条件检索员工个数
-	public int getCountByCondition(
+	public int getCountByCondition(int departmentNo,
 			int lowAge,int highAge,Date startJoinDate,Date endJoinDate
 			,String sex, String nameKey) throws Exception;
 	
 	//按综合条件检索员工页数
-	public int getPageCountByCondition(int rows,
+	public int getPageCountByCondition(int rows,int departmentNo,
 			int lowAge,int highAge,Date startJoinDate,Date endJoinDate
 			,String sex, String nameKey) throws Exception;
 		
