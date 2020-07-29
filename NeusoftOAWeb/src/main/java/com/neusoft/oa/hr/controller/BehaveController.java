@@ -60,6 +60,15 @@ public class BehaveController {
 		result.setMessage("取得爱好列表分页方式成功!");
 		return result;
 	}
+	//取得爱好列表，非分页模式
+		@GetMapping(value="/list/all")
+		public Result<BehaveModel> getListByUnAllWitgPage() throws Exception{
+			Result<BehaveModel> result=new Result<BehaveModel>();
+			result.setList(behaveService.getListByAll());
+			result.setStatus("OK");
+			result.setMessage("取得爱好列表非分页方式成功!");
+			return result;
+		}
 	@GetMapping(value="/get")
 	public Result<BehaveModel> getByNo(@RequestParam(required=true) int no) throws Exception{
 		Result<BehaveModel> result=new Result<BehaveModel>();
