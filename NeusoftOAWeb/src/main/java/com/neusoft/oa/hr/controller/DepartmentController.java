@@ -48,6 +48,17 @@ public class DepartmentController {
 		result.setMessage("删除部门成功!");
 		return result;
 	}
+	//取得所有部门列表（不分页）
+	@GetMapping(value="/list/all")
+	public Result<DepartmentModel> getListByAll() throws Exception{
+		Result<DepartmentModel> result=new Result<DepartmentModel>();
+		result.setList(ds.getListByAll());
+		result.setStatus("OK");
+		result.setMessage("取得全部部门列表成功!");
+		return result;
+		
+	}
+	
 	//取得部门列表，分页模式
 	@GetMapping(value="/list/all/page")
 	public Result<DepartmentModel> getListByAllWitgPage(@RequestParam(required=false,defaultValue="10") int rows,@RequestParam(required=false,defaultValue="1") int page) throws Exception{

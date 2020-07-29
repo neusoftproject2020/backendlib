@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import com.neusoft.oa.restresult.Result;
 
 @RestController
 @RequestMapping(value="/employee")
+@CrossOrigin(origins = {"*", "null"})
 public class EmployeeController {
 	
 	@Autowired
@@ -33,14 +35,13 @@ public class EmployeeController {
 		if(employeePhoto!=null&&(!employeePhoto.isEmpty())) {
 			//目标文件地址
 			File dist=new File("d:/webroot/photo/"+employeePhoto.getOriginalFilename());
+			em.setPhotoFileName(employeePhoto.getOriginalFilename());
+			//em.setPhotoFileName("P_"+em.getId()+"."+    );
+			em.setPhotoContentType(employeePhoto.getContentType());	
 			//取得文件的字节
 			em.setPhoto(employeePhoto.getBytes());
 			//保存上传文件到目标目录
 			employeePhoto.transferTo(dist);
-			
-			em.setPhotoFileName(employeePhoto.getOriginalFilename());
-			//em.setPhotoFileName("P_"+em.getId()+"."+    );
-			em.setPhotoContentType(employeePhoto.getContentType());			
 			
 		}
 		employeeService.add(em);
