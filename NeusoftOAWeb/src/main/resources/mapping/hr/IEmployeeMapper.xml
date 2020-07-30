@@ -196,6 +196,10 @@
  	  </foreach>
  	</insert>
  	
+ 	<delete id="deleteBehaves">
+ 	delete from oa_employeebehave where EMPID=#{id}
+ 	</delete>
+ 	
  	<select id="selectListByBehaves" resultMap="EmployeeResultMap">
  	 select * from oa_employee  where EMPID in (select EMPID from oa_employeebehave where BNO 
  	  in  <foreach item="item" index="index" collection="behaves" open="(" separator="," close=")">

@@ -61,9 +61,15 @@ public class EmployeeController {
 	@PostMapping(value="/update/photo")
 	public Result<String> updatePhoto(EmployeeModel em,@RequestParam(required=false) MultipartFile employeePhoto,@RequestParam(required=false) int[] selectBehaves) throws Exception{
 		if(employeePhoto!=null&&(!employeePhoto.isEmpty())) {
+			//目标文件地址
+			File dist=new File("d:/webroot/photo/"+employeePhoto.getOriginalFilename());
+			
 			em.setPhoto(employeePhoto.getBytes());
 			em.setPhotoFileName(employeePhoto.getOriginalFilename());
 			em.setPhotoContentType(employeePhoto.getContentType());
+			//保存上传文件到目标目录
+			employeePhoto.transferTo(dist);
+			
 		}
 		employeeService.modifyPhoto(em);
 		Result<String> result=new Result<String>();
@@ -71,13 +77,20 @@ public class EmployeeController {
 		result.setMessage("修改员工照片成功!");
 		return result;
 	}
+	//修改员工
 	@PostMapping(value="/modify")
 	public Result<String> modify(EmployeeModel em,@RequestParam(required=false) MultipartFile employeePhoto,@RequestParam(required=false) int[] selectBehaves) throws Exception{
 		
 		if(employeePhoto!=null&&(!employeePhoto.isEmpty())) {
+			//目标文件地址
+			File dist=new File("d:/webroot/photo/"+employeePhoto.getOriginalFilename());
+			
 			em.setPhoto(employeePhoto.getBytes());
 			em.setPhotoFileName(employeePhoto.getOriginalFilename());
 			em.setPhotoContentType(employeePhoto.getContentType());
+			//保存上传文件到目标目录
+			employeePhoto.transferTo(dist);
+			
 		}
 		employeeService.modify(em);
 		employeeService.deleteBehaves(em.getId()); //先删除此员工的所有爱好
