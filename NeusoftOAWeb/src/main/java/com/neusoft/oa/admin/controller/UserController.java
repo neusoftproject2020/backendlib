@@ -37,16 +37,13 @@ public class UserController {
 		}
 		result.setStatus("OK");
 		return result;
-		
 	}
 	@GetMapping(value="/get/{id}")
 	public Result<UserModel> get(@PathVariable(value="id") String id) throws Exception{
 		Result<UserModel> result=new Result<UserModel>();
-		
 		result.setStatus("OK");
 		result.setResult(userService.getById(id));
 		result.setMessage("取得管理员成功");
-		
 		return result;
 		
 	}
@@ -64,6 +61,15 @@ public class UserController {
 			result.setMessage("管理员没有登录");
 		}
 		return result;
+	}
+	@GetMapping(value="/logout")
+	public Result<String> logout(HttpSession session) throws Exception{
+		Result<String> result=new Result<String>();
+		session.invalidate(); //销毁登录信息
+		result.setStatus("OK");
+		result.setMessage("管理员已经登录");
+		return result;
+		
 	}
 	
 
