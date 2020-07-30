@@ -67,7 +67,7 @@ public class UserController {
 		Result<String> result=new Result<String>();
 		session.invalidate(); //销毁登录信息
 		result.setStatus("OK");
-		result.setMessage("管理员已经登录");
+		result.setMessage("管理员已经注销");
 		return result;
 		
 	}
