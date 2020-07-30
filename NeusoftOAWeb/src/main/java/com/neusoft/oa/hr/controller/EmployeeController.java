@@ -136,9 +136,19 @@ public class EmployeeController {
 	@RequestMapping("/photo")
 	public ResponseEntity<byte[]> showPhoto(@RequestParam String id) throws Exception{
 		EmployeeModel em=employeeService.getByIdWithPhoto(id);
+		
+		//如果图片保存在不能直接访问的目录中，如/WEB-INF/photo
+		//通过Java I/O流 InputStream 读取到byte数组。。
+		// InputStream in=new FileInputStream(""d:/webroot/WEB-INF/photo/"+em.getPath());
+		// byte[] data=new byte[in.avaliable()];
+		// in.read(data);
+		
+		
 		if(em!=null&&em.getPhotoContentType()!=null) {
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.set("Content-Type", em.getPhotoContentType());
+			//return new ResponseEntity<byte[]>(data, responseHeaders,HttpStatus.OK);
+			
 			return new ResponseEntity<byte[]>(em.getPhoto(), responseHeaders,HttpStatus.OK);
 		}
 		else {
