@@ -72,5 +72,17 @@ public class UserController {
 		
 	}
 	
+	@GetMapping(value="/get/loginuser")
+	public Result<UserModel> get(HttpSession session) throws Exception{
+		Result<UserModel> result=new Result<UserModel>();
+		result.setStatus("OK");
+		result.setResult((UserModel)session.getAttribute("user"));
+		result.setMessage("取得已经登录管理员成功");
+		return result;
+		
+	}
+	
+	
+	
 
 }
